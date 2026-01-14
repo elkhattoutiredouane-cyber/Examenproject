@@ -8,5 +8,5 @@ class Travel {
     String aankomststation;
     LocalDateTime vertrektijd;
     Trein trein;
-    List<Staff> staff;
+    List<Personeelslid> personeelslids;
 }
