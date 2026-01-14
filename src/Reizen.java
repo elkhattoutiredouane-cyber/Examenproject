@@ -4,9 +4,9 @@ import java.util.List;
 public class Reizen {
 }
 class Travel {
-    String departureStation;
-    String arrivalStation;
-    LocalDateTime departureTime;
-    Trein train;
+    String vertrekstation;
+    String aankomststation;
+    LocalDateTime vertrektijd;
+    Trein trein;
     List<Staff> staff;
 }
