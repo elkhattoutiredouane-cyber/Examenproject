@@ -22,9 +22,10 @@ public class Main {
             System.out.println("1. Passagier registreren");
             System.out.println("2. Reis aanmaken");
             System.out.println("3. Trein koppelen aan reis");
-            System.out.println("4. Ticket verkopen");
-            System.out.println("5. Boardinglijst afdrukken");
-            System.out.println("6. Stoppen");
+            System.out.println("4. Personeel registreren");  // optie 4
+            System.out.println("5. Ticket verkopen");
+            System.out.println("6. Boardinglijst afdrukken");
+            System.out.println("7. Stoppen");
             System.out.print("Maak een keuze: ");
 
             int keuze = -1;
@@ -36,16 +37,16 @@ public class Main {
                 case 1 -> registreerPassagier(scanner);
                 case 2 -> maakReis(scanner);
                 case 3 -> koppelTrein(scanner);
-                case 4 -> verkoopTicket(scanner);
-                case 5 -> printBoardinglijst(scanner);
-                case 6 -> actief = false;
+                case 4 -> registreerPersoneel(scanner); 
+                case 5 -> verkoopTicket(scanner);
+                case 6 -> printBoardinglijst(scanner);
+                case 7 -> actief = false;
                 default -> System.out.println("Terug naar menu.");
             }
         }
 
         System.out.println("Applicatie gestopt.");
     }
-
 
     private static void registreerPassagier(Scanner s) {
         try {
@@ -97,6 +98,33 @@ public class Main {
         } catch (Exception e) { System.out.println("Ongeldige invoer!"); s.nextLine(); }
     }
 
+    private static void registreerPersoneel(Scanner s) {
+        try {
+            System.out.print("Voornaam: "); String voornaam = s.nextLine();
+            System.out.print("Achternaam: "); String achternaam = s.nextLine();
+            System.out.print("Rijksregisternummer: "); String rijksnummer = s.nextLine();
+
+            System.out.println("Kies type personeel:");
+            System.out.println("1. Steward");
+            System.out.println("2. Conducteur");
+            System.out.println("3. Bagagepersoon");
+            int type = s.nextInt(); s.nextLine();
+
+            Personeel p;
+            switch(type) {
+                case 1 -> p = new Steward(voornaam, achternaam, rijksnummer);
+                case 2 -> p = new Conducteur(voornaam, achternaam, rijksnummer);
+                case 3 -> p = new Bagagepersoon(voornaam, achternaam, rijksnummer);
+                default -> {
+                    System.out.println("Ongeldig type!"); return;
+                }
+            }
+
+            personen.add(p);
+            System.out.println("Personeel geregistreerd: " + voornaam + " " + achternaam);
+        } catch(Exception e) { System.out.println("Ongeldige invoer!"); s.nextLine(); }
+    }
+
     private static void verkoopTicket(Scanner s) {
         try {
             List<Passagier> passagiers = new ArrayList<>();
@@ -145,6 +173,7 @@ public class Main {
             String bestandNaam = reis.vertrek + "_" + reis.bestemming + "_" + reis.vertrekTijd + ".txt";
 
             try(FileWriter w = new FileWriter(bestandNaam)) {
+                System.out.println("Boardinglijst voor reis: " + reis.vertrek + " -> " + reis.bestemming);
                 for(Ticket ticket : tickets) {
                     if(ticket.reis == reis) {
                         Passagier p = ticket.passagier;
@@ -153,16 +182,15 @@ public class Main {
                                 ", Rijksnr: " + p.rijksNummer +
                                 ", Geboortedatum: " + p.geboortedatum +
                                 ", Klasse: " + ticket.klasse;
-                        w.write(info + "\n--------------------------\n"); 
+                        w.write(info + "\n--------------------------\n");
                         System.out.println(info);
                     }
                 }
-                System.out.println("Boardinglijst afgedrukt: " + bestandNaam);
+                System.out.println("Boardinglijst afgedrukt naar bestand: " + bestandNaam);
             } catch(IOException e) { System.out.println("Fout bij schrijven bestand."); }
 
         } catch(Exception e) { System.out.println("Ongeldige invoer!"); s.nextLine(); }
     }
-
 
     static abstract class Persoon {
         String voornaam, achternaam, rijksNummer;
@@ -179,9 +207,9 @@ public class Main {
         Personeel(String f,String a,String n){super(f,a,n);}
     }
 
-    static class Bestuurder extends Personeel { Bestuurder(String f,String a,String n){super(f,a,n);} }
     static class Steward extends Personeel { Steward(String f,String a,String n){super(f,a,n);} }
     static class Conducteur extends Personeel { Conducteur(String f,String a,String n){super(f,a,n);} }
+    static class Bagagepersoon extends Personeel { Bagagepersoon(String f,String a,String n){super(f,a,n);} }
 
     static class Trein {
         String naam; int maxWagons; int capaciteit=80;
