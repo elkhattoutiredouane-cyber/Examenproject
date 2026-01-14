@@ -1,7 +1,7 @@
 public class ticket {
 }
 class Ticket {
-    Passenger passenger;
-    Travel travel;
+    passagier passagier;
+    reis reis;
     TravelClass travelClass;
 }
