@@ -148,12 +148,13 @@ public class Main {
                 for(Ticket ticket : tickets) {
                     if(ticket.reis == reis) {
                         Passagier p = ticket.passagier;
-                        w.write("Voornaam: " + p.voornaam + "\n");
-                        w.write("Achternaam: " + p.achternaam + "\n");
-                        w.write("Rijksregisternummer: " + p.rijksNummer + "\n");
-                        w.write("Geboortedatum: " + p.geboortedatum + "\n");
-                        w.write("Klasse: " + ticket.klasse + "\n");
-                        w.write("--------------------------\n");
+                        String info = "Voornaam: " + p.voornaam +
+                                ", Achternaam: " + p.achternaam +
+                                ", Rijksnr: " + p.rijksNummer +
+                                ", Geboortedatum: " + p.geboortedatum +
+                                ", Klasse: " + ticket.klasse;
+                        w.write(info + "\n--------------------------\n"); 
+                        System.out.println(info);
                     }
                 }
                 System.out.println("Boardinglijst afgedrukt: " + bestandNaam);
